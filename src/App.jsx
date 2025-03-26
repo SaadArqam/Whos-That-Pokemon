@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+// import "./styles.css"; 
 
 function WhosThatPokemon() {
   const [pokemon, setPokemon] = useState(null);
@@ -6,6 +7,7 @@ function WhosThatPokemon() {
   const [message, setMessage] = useState("");
   const [reveal, setReveal] = useState(false);
   const [timeLeft, setTimeLeft] = useState(15);
+  const [timerActive, setTimerActive] = useState(true);
 
   async function fetchPokemon() {
     let id = Math.floor(Math.random() * 1025) + 1;
@@ -16,6 +18,7 @@ function WhosThatPokemon() {
     setMessage("");
     setReveal(false);
     setTimeLeft(15);
+    setTimerActive(true);
   }
 
   useEffect(() => {
@@ -25,18 +28,23 @@ function WhosThatPokemon() {
   useEffect(() => {
     if (timeLeft === 0) {
       setReveal(true);
+      setTimerActive(false);
       return;
     }
+    if (!timerActive) return;
+
     const timer = setInterval(() => {
       setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
     }, 1000);
+
     return () => clearInterval(timer);
-  }, [timeLeft, pokemon]);
+  }, [timeLeft, timerActive, pokemon]);
 
   const checkGuess = () => {
     if (guess.toLowerCase().trim() === pokemon.name) {
       setMessage("Yay you guessed it correct!! 🥳🥳🥳🥳");
       setReveal(true);
+      setTimerActive(false);
     } else {
       setMessage("NO try again 😭😭😭");
     }
@@ -44,9 +52,9 @@ function WhosThatPokemon() {
 
   return (
     <>
-      <div style={{ textAlign: "center", marginTop: "20px" }}>
         <h1>Who's That Pokémon?</h1>
-        <h2>Time Left: {timeLeft} sec</h2>
+      <div style={{ textAlign: "center", marginTop: "20px" ,backgroundColor:"white", border:"5px solid black",width:"80vh",padding:"20px"}}>
+        <h2 style={{display:"flex",justifyContent:"flex-end",marginRight:"15px"}}>Time Left: {timeLeft} sec</h2>
         {pokemon && (
           <>
             <img
@@ -59,12 +67,15 @@ function WhosThatPokemon() {
                 value={guess}
                 onChange={(e) => setGuess(e.target.value)}
                 placeholder="Enter Pokémon name..."
+                disabled={reveal}
               />
-              <button onClick={checkGuess} disabled={reveal}>Guess</button>
+              <button className="button-50" onClick={checkGuess} disabled={reveal}>
+                Guess
+              </button>
             </div>
             <h2>{message}</h2>
-            <button onClick={() => setReveal(true)}>I don't know!</button>
-            <button onClick={fetchPokemon}>Next</button>
+            <button className="button-50" onClick={() => { setReveal(true); setTimerActive(false); }}>I don't know!</button>
+            <button className="button-50" onClick={fetchPokemon}>Next</button>
             {reveal && <h1>It's {pokemon.name}!</h1>}
           </>
         )}
