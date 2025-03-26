@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-// import "./styles.css"; 
 
 function WhosThatPokemon() {
   const [pokemon, setPokemon] = useState(null);
@@ -46,32 +45,21 @@ function WhosThatPokemon() {
       setReveal(true);
       setTimerActive(false);
     } else {
-      setMessage("NO try again 😭😭😭");
+      setMessage("No, try again 😭😭😭");
     }
   };
 
   return (
     <>
-        <h1>Who's That Pokémon?</h1>
+      <h1>Who's That Pokémon?</h1>
       <div style={{ textAlign: "center", marginTop: "20px" ,backgroundColor:"white", border:"5px solid black",width:"80vh",padding:"20px"}}>
         <h2 style={{display:"flex",justifyContent:"flex-end",marginRight:"15px"}}>Time Left: {timeLeft} sec</h2>
         {pokemon && (
           <>
-            <img
-              src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`}
-              alt="Guess the Pokémon"
-              style={{ width: "400px", filter: reveal ? "none" : "brightness(0%)" }}
-            />
+            <img src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`} alt="Guess the Pokémon" style={{ width: "400px", filter: reveal ? "none" : "brightness(0%)" }}/>
             <div>
-              <input
-                value={guess}
-                onChange={(e) => setGuess(e.target.value)}
-                placeholder="Enter Pokémon name..."
-                disabled={reveal}
-              />
-              <button className="button-50" onClick={checkGuess} disabled={reveal}>
-                Guess
-              </button>
+              <input value={guess} onChange={(e) => setGuess(e.target.value)} placeholder="Enter Pokémon name..." disabled={reveal}/>
+              <button className="button-50" onClick={checkGuess} disabled={reveal}>Guess</button>
             </div>
             <h2>{message}</h2>
             <button className="button-50" onClick={() => { setReveal(true); setTimerActive(false); }}>I don't know!</button>
